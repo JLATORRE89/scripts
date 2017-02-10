@@ -9,7 +9,7 @@ Try
     $mailServer = Read-Host "What mail server do you want to test?"
     $serverPort = Read-Host "What port number?"
     $username = Read-Host "Username for mail server"
-    ## Read password as secrue string; just in case.
+    ## Read password as secure string; just in case.
     $password = Read-Host "Password for username:" -AsSecureString
     $subject = "Test Mail from $From"
     $body = "This is a test e-mail sent at: $date"
