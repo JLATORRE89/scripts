@@ -1,13 +1,26 @@
-from lxml import html
+from bs4 import BeautifulSoup
+import json
 import requests
 
-
-url = 'https://www.walmart.com/search/?page=1&ps=40&query=toilet+paper'
+# Search term should collect user input from HTML form.
+SearchTerm = 'Angel Soft'
+SearchMark = SearchTerm.replace(' ', '+')
+url = 'https://www.walmart.com/search/?page=1&ps=40&query=' + SearchMark
 page = requests.get(url)
-tree = html.fromstring(page.content)
 
+soup = BeautifulSoup(page.content, 'html.parser')
+# search for json content <script id="searchContent" type="application/json">
+hits = soup.find(id="searchContent")
+# strip out all hits, load json, parse results.
+hits = str(hits)
+hits = hits.strip('<script id="searchContent" type="application/json">')
+hits = hits.strip('</script>')
+jsonContent = json.loads(hits)
+print(jsonContent)
+#for span in hits:
+#    if span.__contains__(SearchTerm) :
+#        if span.__contains__("OUT_OF_STOCK") :
+#            print('Found out of stock item.')
+# "highlightedTitleTerms":["Angel","Soft"]
+# "inventory":{"displayFlags":["OUT_OF_STOCK"],"availableOnline":false}
 
-# //*[@id="searchProductResult"]/ul/li[1]/div/div[2]/div[5]/div
-results = tree.xpath('//mark')
-
-print('Results: ', results)
