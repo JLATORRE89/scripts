@@ -80,9 +80,8 @@ fi
 echo $'\e[1;34m'Building new initramfs.$'\e[0m'
 dracut /boot/initramfs-$(uname -r).img $(uname -r) --force
 
-echo Verify Install with lsmod | grep nvidia
+# Verify Install with lsmod | grep nvidia
 
 # reboot system
 echo $'\e[1;32m'Rebooting system.$'\e[0m'
-echo Rebooting system.
 reboot
