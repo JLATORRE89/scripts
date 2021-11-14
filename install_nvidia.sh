@@ -59,7 +59,7 @@ dracut /boot/initramfs-$(uname -r).img $(uname -r)
 echo $'\e[1;34m'Compiling driver.$'\e[0m'
 sh NVIDIA-Linux-x86_64-$DRIVER.run --add-this-kernel -z -s
 
-# Change filename to something more usable for a repository.
+# Copy file to something more usable for a repository.
 echo $'\e[1;34m'Updating file names.$'\e[0m'
 cp NVIDIA-Linux-x86_64-$DRIVER-custom.run NVIDIA-kernel-$(uname -r).run
 
@@ -86,6 +86,3 @@ echo Verify Install with lsmod | grep nvidia
 echo $'\e[1;32m'Rebooting system.$'\e[0m'
 echo Rebooting system.
 reboot
-
-
-
