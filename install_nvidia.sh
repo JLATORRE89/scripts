@@ -58,6 +58,7 @@ dracut /boot/initramfs-$(uname -r).img $(uname -r)
 # This can be performed on a reference machine.
 echo $'\e[1;34m'Compiling driver.$'\e[0m'
 sh NVIDIA-Linux-x86_64-$DRIVER.run --add-this-kernel -z -s
+wait
 
 # Copy file to something more usable for a repository.
 echo $'\e[1;34m'Updating file names.$'\e[0m'
@@ -71,14 +72,17 @@ DriverCheck=$(lsmod | grep -c nvidia_modeset)
 if [ $DriverCheck -eq 0 ]; then
 	echo No drivered loaded.
 	./NVIDIA-Linux-x86_64-$DRIVER-custom.run -z -s
+	wait
 else
 	echo Found drivers loaded.
 	./NVIDIA-Linux-x86_64-$DRIVER-custom.run -z -s -K
+	wait
 fi
 
 # Build new initramfs
 echo $'\e[1;34m'Building new initramfs.$'\e[0m'
 dracut /boot/initramfs-$(uname -r).img $(uname -r) --force
+wait
 
 # Verify Install with lsmod | grep nvidia
 
