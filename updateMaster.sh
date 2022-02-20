@@ -6,7 +6,8 @@ ith YU in the http field. It will string replace the YU when found. You password
 # Dependencies: sshpass createrepo sub.sh transfer.sh createRepo.sh
 exec >> update.log
 echo "Work Started at: $(date +%m-%d-%Y-%T)"
-source /var/www/tools/patchManager/sub.sh
+# sub.sh not needed in all cases
+#source /var/www/tools/patchManager/sub.sh
 source /var/www/tools/patchManager/createRepo.sh
 # Prepare local repo file.
 repo=$(</var/www/html/repo/local.temp)
