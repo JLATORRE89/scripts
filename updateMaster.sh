@@ -1,8 +1,8 @@
 #!/bin/bash
 # 02/20/2022
-# This file drives the creation and maintenance of a local reposistory. It will create update.log and run in the backgro
-und by default. This script requires local.temp be in /var/www/html/repo and that the IP of the yum servers be denoted w
-ith YU in the http field. It will string replace the YU when found. You password file must be located at: /root/xfer.
+# This file drives the creation and maintenance of a local reposistory. It will create update.log and run in the background by default.
+# This script requires local.temp be in /var/www/html/repo and that the IP of the yum servers be denoted with YU in the http field.
+# It will string replace the YU when found. You password file must be located at: /root/xfer.
 # Dependencies: sshpass createrepo sub.sh transfer.sh createRepo.sh
 exec >> update.log
 echo "Work Started at: $(date +%m-%d-%Y-%T)"
