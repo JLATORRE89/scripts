@@ -1,6 +1,6 @@
 #!/bin/bash
 # RHEL6 reference: https://www.thegeekdiary.com/how-to-configure-ldap-client-on-centos-rhel-6-using-sssd/
-SERVERIP = "192.168.86.24"
+SERVERIP = "xxx.xxx.xxx.xxx"
 OU = "partition1"
 DCBASE = "lan"
 DCSUFFIX = "local"
