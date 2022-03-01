@@ -5,7 +5,9 @@ OU = "partition1"
 DCBASE = "lan"
 DCSUFFIX = "local"
 # DO NOT EDIT BELOW THIS LINE
+echo "Install SSSD..."
 yum install sssd sssd-client
+echo "Update nsswitch.conf"
 file = "/etc/nsswitch.conf"
 search = "passwd: files"
 replace = "passwd: files sss"
@@ -16,7 +18,9 @@ sed -i 's/$search/$replace/' $file
 search = "group: files"
 replace = "group: files sss"
 sed -i 's/$search/$replace/' $file
-/etc/nsswitch.conf
+echo "Backup Defult authconfig file"
 authconfig --savebackup=/backups/authconfigbackup20220228
-authconfig --enablesssd --enablesssdauth --ldapserver=$SERVERIP --ldapbasedn="lan.local" --enableldaptls --update
+echo "Make it happen"
+authconfig --enablesssd --enablesssdauth --ldapserver=$SERVERIP --ldapbasedn="$DCBASE.$DCSUFFIX" --enableldaptls --update
 authconfig --enableldap --enableldapauth --ldapserver=ldap://ldap.$SERVERIP:389 --ldapbasedn="ou=$OU,dc=$DCBASE,dc=$DCSUFFIX" --enableldaptls --ldaploadcacert=https://ca.$SERVERIP/caCert.crt --update
+echo "All work complete."
