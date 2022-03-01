@@ -1,6 +1,6 @@
 #!/bin/bash
 # RHEL6 reference: https://www.thegeekdiary.com/how-to-configure-ldap-client-on-centos-rhel-6-using-sssd/
-SERVERIP = "xxx.xxx.xxx.xxx"
+SERVERIP = "192.168.86.24"
 OU = "partition1"
 DCBASE = "lan"
 DCSUFFIX = "local"
@@ -8,19 +8,21 @@ DCSUFFIX = "local"
 echo "Install SSSD..."
 yum install sssd sssd-client
 echo "Update nsswitch.conf"
-file = "/etc/nsswitch.conf"
-search = "passwd: files"
-replace = "passwd: files sss"
+file="/etc/nsswitch.conf"
+search="passwd: files"
+replace="passwd: files sss"
 sed -i 's/$search/$replace/' $file
-search = "shadow: files"
-replace = "shadow: files sss"
+search="shadow: files"
+replace="shadow: files sss"
 sed -i 's/$search/$replace/' $file
-search = "group: files"
-replace = "group: files sss"
+search="group: files"
+replace="group: files sss"
 sed -i 's/$search/$replace/' $file
 echo "Backup Defult authconfig file"
 authconfig --savebackup=/backups/authconfigbackup20220228
 echo "Make it happen"
-authconfig --enablesssd --enablesssdauth --ldapserver=$SERVERIP --ldapbasedn="$DCBASE.$DCSUFFIX" --enableldaptls --update
+authconfig --enablesssd --enablesssdauth --ldapserver=$SERVERIP --ldapbasedn="$DCBASE.$DCSUFFIX" --enableldaptls --updat
+e
+# NOTE: caCert.crt will not exist unless AD FS is installed, it will not work on AD LDS
 authconfig --enableldap --enableldapauth --ldapserver=ldap://ldap.$SERVERIP:389 --ldapbasedn="ou=$OU,dc=$DCBASE,dc=$DCSUFFIX" --enableldaptls --ldaploadcacert=https://ca.$SERVERIP/caCert.crt --update
 echo "All work complete."
