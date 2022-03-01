@@ -21,8 +21,7 @@ sed -i 's/$search/$replace/' $file
 echo "Backup Defult authconfig file"
 authconfig --savebackup=/backups/authconfigbackup20220228
 echo "Make it happen"
-authconfig --enablesssd --enablesssdauth --ldapserver=$SERVERIP --ldapbasedn="$DCBASE.$DCSUFFIX" --enableldaptls --updat
-e
+authconfig --enablesssd --enablesssdauth --ldapserver=$SERVERIP --ldapbasedn="$DCBASE.$DCSUFFIX" --enableldaptls --update
 # NOTE: caCert.crt will not exist unless AD FS is installed, it will not work on AD LDS
 authconfig --enableldap --enableldapauth --ldapserver=ldap://ldap.$SERVERIP:389 --ldapbasedn="ou=$OU,dc=$DCBASE,dc=$DCSUFFIX" --enableldaptls --ldaploadcacert=https://ca.$SERVERIP/caCert.crt --update
 echo "All work complete."
