@@ -1,5 +1,11 @@
 ---
 - hosts: all
+  # This playbook will configure a linux system to use SSSD for Authentication with Active Directory. It will configure the system to allow Domain Admins SUDO rights.
+  # Requires: Ansible Version 2.9.27
+  # SELinux might need to be disabled on some legacy hosts during initial installation.
+  # https://access.redhat.com/solutions/5674911
+  # https://access.redhat.com/solutions/62794
+  # https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/sssd-user-ids
   gather_facts: no
   remote_user: root
   become: true
@@ -29,6 +35,12 @@
       regexp: 'group: files'
       replace: 'group: files sss'
 
+  - name: Create Sudoers Coinfiguration File
+    copy:
+      dest: /etc/sudoers.d/local
+      content: |
+        %Domain\ Admins\ ALL=(ALL) ALL
+
   - name: Set Authconfig
     ansible.builtin.command:
       argv:
@@ -39,5 +51,3 @@
         - --ldapbasedn='dc=example,dc=com'
         - --enableldaptls
         - --update
-
-     # https://access.redhat.com/solutions/62794
