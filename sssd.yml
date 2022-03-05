@@ -9,6 +9,11 @@
   gather_facts: no
   remote_user: root
   become: true
+  vars:
+    ldapserver: ldap.example.com
+    ldapbasedn: dc=example,dc=com
+    sudofile: local
+  # DO NOT EDIT PAST THIS LINE
   tasks:
   - name: Install SSSD packages
     yum:
@@ -37,7 +42,7 @@
 
   - name: Create Sudoers Coinfiguration File
     copy:
-      dest: /etc/sudoers.d/local
+      dest: /etc/sudoers.d/{{ sudofile }}
       content: |
         %Domain\ Admins\ ALL=(ALL) ALL
 
@@ -47,7 +52,7 @@
         - /usr/sbin/authconfig
         - --enablesssd
         - --enablesssdauth
-        - --ldapserver='ldap.example.com'
-        - --ldapbasedn='dc=example,dc=com'
+        - --ldapserver={{ ldapserver }}
+        - --ldapbasedn={{ ldapbasedn  }}
         - --enableldaptls
         - --update
