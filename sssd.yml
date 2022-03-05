@@ -40,11 +40,12 @@
       regexp: 'group: files'
       replace: 'group: files sss'
 
-  - name: Create Sudoers Coinfiguration File
+- name: Create Sudoers Coinfiguration File
     copy:
       dest: /etc/sudoers.d/{{ sudofile }}
       content: |
-        %Domain\ Admins\ ALL=(ALL) ALL
+        %domain\ admins ALL=(ALL) ALL
+      mode: '0440'
 
   - name: Set Authconfig
     ansible.builtin.command:
