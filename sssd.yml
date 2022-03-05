@@ -1,0 +1,43 @@
+---
+- hosts: all
+  gather_facts: no
+  remote_user: root
+  become: true
+  tasks:
+  - name: Install SSSD packages
+    yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+      - sssd
+      - sssd-client
+
+  - name: Update nsSwitch passwd
+    ansible.builtin.replace:
+      path: /etc/nsswitch.conf
+      regexp: 'passwd: files'
+      replace: 'passwd: files sss'
+  - name: Update nsSwitch Shadow
+    ansible.builtin.replace:
+      path: /etc/nsswitch.conf
+      regexp: 'shadow: files'
+      replace: 'shadow: files sss'
+  - name: Update nsSwitch Group
+    ansible.builtin.replace:
+      path: /etc/nsswitch.conf
+      regexp: 'group: files'
+      replace: 'group: files sss'
+
+  - name: Set Authconfig
+    ansible.builtin.command:
+      argv:
+        - /usr/sbin/authconfig
+        - --enablesssd
+        - --enablesssdauth
+        - --ldapserver='ldap.example.com'
+        - --ldapbasedn='dc=example,dc=com'
+        - --enableldaptls
+        - --update
+
+     # https://access.redhat.com/solutions/62794
